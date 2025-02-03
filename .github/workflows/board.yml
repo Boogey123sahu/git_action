@@ -1,0 +1,36 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+    branches: ["master" ]
+  workflow_dispatch:
+
+  jobs:
+    build:
+      runs-on:self-hosted
+
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v2
+
+        - name: Install dependencies
+          run: dotnet restore
+          
+        - name: Build
+          run: C:\windows\Microsoft.Net\Framework\V4.0.0.30319\MSBuild.exe CSGL_Project/CSGL_Project.csproj /p:Configuration=Release
+
+        - name: Publish
+          run: dotnet msbuild /t:CustomPublish
+
+        - name: Create deployment directory
+          run: New-Item -Itemtype Directory -Force -Path ./deployment
+        - name: Copy build output
+          run: Copy-Item -Path CSGL_Project\bin\* -Destination D:\Gitaction_deployment -Recurse
+
+             - name: Archive artifacts
+               uses: action/upload-artifact@v2
+               with:
+                 name: deployment-files
+                 path: ./deployment
