@@ -7,5 +7,5 @@ jobs:
       Global_variable: 'Hello'  # Corrected spelling
 
     steps:
-      - name: Print the variable
+      - name: Print the variable  
         run: echo $Global_variable  # Corrected variable name
