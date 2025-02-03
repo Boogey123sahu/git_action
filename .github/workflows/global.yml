@@ -1,0 +1,11 @@
+name: global_variable_access
+
+jobs:
+  example_job:
+    runs-on: ubuntu-latest
+    env: 
+      Global_variable: 'Hello'  # Corrected spelling
+
+    steps:
+      - name: Print the variable
+        run: echo $Global_variable  # Corrected variable name
